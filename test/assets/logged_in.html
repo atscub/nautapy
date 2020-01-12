@@ -1,0 +1,823 @@
+
+
+
+
+
+
+
+
+
+
+<c:set var="nativelang" value="es_ES"></c:set>
+
+
+
+
+
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+		<meta http-equiv="pragma" content="no-cache">
+
+		<meta http-equiv="cache-control" content="no-store">
+
+		<meta http-equiv="expires" content="0">
+
+		<meta http-equiv="keywords" content=" ">
+
+		<meta http-equiv="description" content=" ">
+
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+		<title>Nauta
+
+		</title>
+
+		<link href="/nauta_etecsa/LoginURL/css/wifi.css" rel="stylesheet"
+
+			type="text/css">
+
+		<link href="/nauta_etecsa/LoginURL/css/form.css" rel="stylesheet"
+
+			type="text/css">
+
+		<script type="text/javascript">
+
+
+
+     //显示在线时间
+
+	  function $$(tt){return tt<10?"0"+tt : tt;};
+
+	  var today   = new Date();
+
+	  var hour  = $$(today.getHours() );
+
+	  var minu  = $$(today.getMinutes());
+
+	  var second= $$(today.getSeconds());
+
+	  var actime= 'null';
+
+	  if('notFound.jsp' != 'notFound.jsp')
+
+	  {
+
+	  	var newWnd =window.open("notFound.jsp","_blank");newWnd.opener = null;
+
+	  }
+
+       function set()
+
+	   {
+
+			var loginTime=parseInt((new Date().getTime()-today.getTime())/1000);
+
+			if(loginTime++ > 600000)
+
+			{
+
+				today =new Date() ;
+
+				//你已经登录了一个星期了，时间重置！
+
+				alert("Ha iniciado sesión en una semana. Reajuste el tiempo.");
+
+			}
+
+			if(actime > 0)
+
+			{
+
+			    setonTime(actime);
+
+			    actime++;
+
+			}
+
+			else if(loginTime >0)
+
+			{
+
+				setonTime(loginTime);
+
+			}
+
+		}
+
+	  setInterval(set,1000);
+
+	  function setonTime(loginTime)
+
+			{
+
+				var hours   = 0;
+
+				var minutes = 0;
+
+				var seconds = 0;
+
+
+
+				hours = Math.floor(loginTime/3600);
+
+				minutes = Math.floor((loginTime%3600)/60);
+
+				seconds = loginTime%60;
+
+
+
+				if(hours <= 9)
+
+				{
+
+					hours="0"+hours;
+
+				}
+
+				if(minutes <= 9)
+
+				{
+
+					minutes="0"+minutes;
+
+				}
+
+				if(seconds <= 9)
+
+				{
+
+					seconds="0"+seconds;
+
+				}
+
+				var cdate = hours + ":" + minutes + ":" + seconds;
+
+				document.getElementById('onlineTime').innerHTML = cdate;
+
+			}
+
+
+
+	  var g_httpRequest        = null;
+
+
+
+	  var g_isSubmitLogout = false;
+
+
+
+		//登录后提示退出
+
+		function windowExitFunc(e)
+
+		{
+
+		    var event= window.event||e;
+
+			try
+
+			{
+
+				if(g_isSubmitLogout)
+
+				{
+
+					return false;
+
+				}
+
+
+
+				var message = "Visitar otros sitios web en esta página le llevará fuera de línea de forma anormal. Para visitar otros sitios web, haga clic en Cancelar y abra una nueva página.";
+
+
+
+				if (event)
+
+				{
+
+					event.returnValue = message;
+
+				}
+
+
+
+			}
+
+			catch(e)
+
+			{
+
+				alert("alert window error!!!");
+
+			}
+
+			return true;
+
+		}
+
+
+
+		function userSubmitLogout()
+
+		{
+
+			if(!confirm("Se le desconectará. ¿Seguro que quieres cerrar sesión?"))
+
+			{
+
+		       return false;
+
+			}
+
+
+
+			logoutImpl();
+
+			return true;
+
+		}
+
+
+
+		function logoutImpl()
+
+		{
+
+		  pageOnunload();
+
+		}
+
+
+
+		function pageOnunload()
+
+		{
+
+		        //if(!g_httpRequest){ g_httpRequest = createHttpRequest(); }
+
+		        var cookieCheck = document.getElementById("removeCookie");
+
+                var removeCookie = "1";
+
+                if (cookieCheck && cookieCheck.checked == true) {
+
+                    removeCookie = cookieCheck.value;
+
+                }
+
+		         var g_httpRequest = createHttpRequest();
+
+				 if (g_httpRequest == null)
+
+		         {
+
+		           alert("Se desconecta de forma anormal. Por favor, póngase en contacto con el administrador de la red.");
+
+		            return false;
+
+		         }
+
+		         else
+
+		         {
+
+		             var urlParam = "ATTRIBUTE_UUID=B2F6AAB9A9868BABC0BDC6B7A235ABE2&CSRFHW=61cf73483775cf865a0fdf4640990e45"
+
+		        	         + "&wlanuserip=10.190.20.104"
+
+		        	         + "&ssid="
+
+		                     + "&loggerId=20191122050249201+rrtoledo@nauta.com.cu"
+
+		                     + "&domain="
+
+		                     + "&username=rrtoledo@nauta.com.cu"
+
+		                     + "&wlanacname="
+
+		                     + "&wlanmac="
+
+		                     +"&remove="+removeCookie;
+
+		             g_httpRequest.open("GET", "/LogoutServlet?CSRFHW=61cf73483775cf865a0fdf4640990e45&" + urlParam, true);
+
+		             g_httpRequest.send();
+
+		              var isOut;
+
+		             g_httpRequest.onreadystatechange=function()
+
+	       			{
+
+	        			if (g_httpRequest.readyState==4 && g_httpRequest.status==200)
+
+	         			{
+
+	         				if(g_httpRequest.responseText.indexOf("SUCCESS") != -1)
+
+					          {
+
+					             if (g_httpRequest.responseText.indexOf("REMOVE_AUTHINFO_SUCCESS") != -1)
+
+					            {
+
+                                    alert("???logout_result.removecookie.success???");
+
+                                }
+
+                                else if(g_httpRequest.responseText.indexOf("ERROR") != -1){
+
+                                   alert("???logout_result.removecookie.fail???");
+
+					            }
+
+					               isOut = true;
+
+					          }
+
+					          else
+
+					          {
+
+					            isOut = true;
+
+					          }
+
+					          if(isOut == false)
+
+							  {
+
+							    alert("Se desconecta de forma anormal. Por favor, póngase en contacto con el administrador de la red.");
+
+							    return;
+
+							  }
+
+							  else if (isOut == null)
+
+							  {
+
+							    alert("Su red está desconectada. Compruébelo por favor.");
+
+							    g_isSubmitLogout = true;
+
+							     logoutToFirstPage();
+
+							    return;
+
+							  }
+
+							  // alert("???logout_result.logout_success???");
+
+							  g_isSubmitLogout = true;
+
+							  //window.location.replace("http://www.google.com");
+
+							  logoutToFirstPage();
+
+	         			}
+
+	         			else
+
+	         			{
+
+	         				 if(g_httpRequest.readyState==4 && g_httpRequest.status != 200)
+
+				             {
+
+				              	alert("request error "  + g_httpRequest.status);
+
+				              	return false;
+
+				             }
+
+	         			}
+
+	         		}
+
+		       }
+
+		}
+
+        function logoutToFirstPage()
+
+        {
+
+        	//[false alarm:Cross-Site Scripting: Reflected]
+
+            window.location.href="/nauta_etecsa/OnlineURL/offline.jsp?CSRFHW=61cf73483775cf865a0fdf4640990e45&lang="+'es_ES';
+
+        }
+
+         function IEkeydown(event)
+
+		 {
+
+		    if ((event.keyCode == 8)||  //屏蔽退格删除键
+
+		    (event.keyCode == 114)||
+
+		    (event.keyCode == 116)||            //屏蔽 F5 刷新键
+
+		    (event.keyCode == 122))             //屏蔽 F12 刷新键
+
+		    {
+
+		       event.keyCode=0;
+
+		       event.returnValue=false;
+
+		    }
+
+
+
+		    if ((event.altKey)&& ((event.keyCode==37)||(event.keyCode==39))) // 屏蔽 Alt + -> 和 Alt+ <-
+
+		    {
+
+		        event.returnValue=false;
+
+		    }
+
+
+
+		    if (event.ctrlKey ||(event.shiftKey)&&(event.keyCode==121)) //屏蔽 Ctrl 键 和 shift+F10
+
+		    {
+
+		        event.returnValue=false;
+
+		    }
+
+		}
+
+
+
+		function FFkeydown(event)
+
+		{
+
+	        var key = event.which;
+
+		    if ((key == 8) || (key == 114)|| (key == 116)||  (key == 122))                      //屏蔽退格删除键(event.keyCode ==   8)||//屏蔽 F5 刷新键//屏蔽 F12 刷新键
+
+		    {
+
+		   	    key=0;
+
+		        event.preventDefault();
+
+		    }
+
+            if ((event.altKey)&& ((key==37)||(key==39))) // 屏蔽 Alt + -> 和 Alt+ <-
+
+		    {
+
+		        event.preventDefault();
+
+		    }
+
+            if (event.ctrlKey ||(event.shiftKey)&&(key==121)) //屏蔽 Ctrl 键 和 shift+F10
+
+		    {
+
+		        event.preventDefault();
+
+		    }
+
+		}
+
+		function windowKeyDown(e)
+
+	    {
+
+		    if (window.event)
+
+	        {
+
+	       	    var event = window.event;
+
+                IEkeydown(event);
+
+ 	        }
+
+ 	        else
+
+ 	        {
+
+ 	      		var event= e;
+
+			    FFkeydown(event);
+
+		    }
+
+        }
+
+
+
+		function createHttpRequest()
+
+		{
+
+	        var request;
+
+	        try
+
+	        {
+
+	            request = new XMLHttpRequest();
+
+	        }
+
+	        catch (trymicrosoft)
+
+		    {
+
+	            try
+
+	            {
+
+	                request = new ActiveXObject("Microsoft.XMLHTTP");
+
+	            }
+
+	            catch (failed)
+
+	            {
+
+	                try
+
+	                {
+
+	                    request = new ActiveXObject("Msxml2.XMLHTTP");
+
+	                }
+
+	                catch (othermicrosoft)
+
+	                {
+
+	                    request = null;
+
+	                }
+
+	            }
+
+	        }
+
+	        return request;
+
+		}
+
+
+
+        function windowOnunload()
+
+		{
+
+		    if (!g_isSubmitLogout)
+
+		    {
+
+		        logoutImpl();
+
+		    }
+
+		}
+
+
+
+		function updateAvailableTime()
+
+		{
+
+			var g_httpRequest = createHttpRequest();
+
+		    if (g_httpRequest == null)
+
+            {
+
+           		alert("Actualización disponible tiempo falle.");
+
+            	return;
+
+         	}
+
+         	else
+
+         	{
+
+	            g_httpRequest.open("post", "/EtecsaQueryServlet?CSRFHW=61cf73483775cf865a0fdf4640990e45&op=getLeftTime&op1=rrtoledo@nauta.com.cu&op2=EF7E5B1878C624B2F633A8268D5A329635EBC15876B9EDE7645FAB578590B525", true);
+
+	            g_httpRequest.send();
+
+	            g_httpRequest.onreadystatechange=function()
+
+	            {
+
+	            	if (g_httpRequest.readyState==4 && g_httpRequest.status==200)
+
+	            	{
+
+	            		//得到最新的有效时间
+
+	            		var responseText = g_httpRequest.responseText;
+
+	            		if (responseText.indexOf("errorop") != -1)
+
+	            		{
+
+	            		    alert("Actualización disponible tiempo falle.");
+
+	            		    document.getElementById("availableTime").innerHTML = "--:--:--";
+
+	            		    return;
+
+	            		}
+
+	            		//写入页面
+
+	            		document.getElementById("availableTime").innerHTML = responseText;
+
+
+
+	            	}
+
+	            	else if(g_httpRequest.readyState==4 && g_httpRequest.status != 200)
+
+		            {
+
+		              	alert("request error "  + g_httpRequest.status);
+
+		              	return false;
+
+		            }
+
+	            }
+
+         	}
+
+		}
+
+	</script>
+
+	</head>
+
+
+
+	<body onkeydown="windowKeyDown(event);"
+
+		onbeforeunload="windowExitFunc(event);">
+
+		<div id="header">
+
+			<img src="/nauta_etecsa/LoginURL/images/nauta_wifi.jpg"
+
+				id="logo_nauta">
+
+			<img src="/nauta_etecsa/LoginURL/images/etecsa.jpg" id="logo_etecsa">
+
+		</div>
+
+		<div id="contenedor" style="height: 100%;">
+
+			<div id="int" style="width: 500px;">
+
+				<div class="blq">
+
+					<div class="title">
+
+						Bienvenido
+
+					</div>
+
+					<div class="blq_int clearfix">
+
+						<div id="cont"
+
+							style="background-color: white; width: 400px; margin: 0 auto; text-align: center;">
+
+							<div style="padding: 20px; text-align: center;">
+
+								<div>
+
+									<div style="float: left;">
+
+										<img src="/nauta_etecsa/OnlineURL/images/conected.png">
+
+									</div>
+
+									<span
+
+										style="float: left; padding-top: 15px; padding-left: 10px; font-weight: bold;">Usted está conectado </span>
+
+								</div>
+
+								<br class="clearfloat">
+
+								<table id="logout" align="center">
+
+									<tbody>
+
+										<tr>
+
+											<td class="key">
+
+												Usuario
+
+											</td>
+
+											<td>
+
+												rrtoledo@nauta.com.cu
+
+											</td>
+
+										</tr>
+
+										<tr>
+
+											<td class="key">
+
+												Tiempo consumido
+
+											</td>
+
+											<td id="onlineTime"></td>
+
+										</tr>
+
+										<tr>
+
+											<td class="key">
+
+												Tiempo disponible
+
+											</td>
+
+											<td id="availableTime"></td>
+
+										</tr>
+
+									</tbody>
+
+								</table>
+
+								<br>
+
+								<input class="btn" name="refrescar"
+
+									value='Actualizar'
+
+									onclick="updateAvailableTime();" type="button">
+
+								<input class="btn" name="logout"
+
+									value='Cerrar sesión'
+
+									onclick="userSubmitLogout();" type="button">
+
+							</div>
+
+							<img src="/nauta_etecsa/OnlineURL/images/nauta_wifi_popup.jpg"
+
+								style="padding: 0 5px 15px 0; width: 190px;">
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+
+
+	</body>
+
+	<script type="text/javascript">
+
+ 	window.onload = function ()
+
+ 	{
+
+	 	updateAvailableTime();
+
+	 	set();
+
+ 	}
+
+  </script>
+
+</html>
