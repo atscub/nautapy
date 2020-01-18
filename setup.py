@@ -53,5 +53,8 @@ setup(
     install_requires=get_requirements(),
     entry_points={
         "console_scripts": [about["__cli__"] + "=nautapy.cli:main"],
-    }
+    },
+    scripts=[
+        'bin/run-connected',
+    ]
 )
