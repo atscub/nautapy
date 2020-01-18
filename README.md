@@ -1,43 +1,119 @@
 # nautapy
 
-__nautapy__ es un wrapper  [Nauta](https://secure.etecsa.net:8443/) de Cuba.
+__nautapy__ Python API para el portal cautivo [Nauta](https://secure.etecsa.net:8443/) de Cuba + CLI.
 
-## Estadisticas
-![Downloads](https://pepy.tech/badge/nauta-cli)
 
 ## Requisitos
 
-1. Instale la última versión estable de [Python](https://www.python.org/downloads/)
+1. Instale la última versión estable de [Python3](https://www.python.org/downloads/)
 
 ## Instalación
 
-Instalación fácil con PIP:
+Instalación:
 
-`> python -m pip install --upgrade nauta-cli`
+```bash
+pip3 install --upgrade https://github.com/abrahamtoledo/nautapy.git#v0.1.0
+```
 
 ## Modo de uso
 
-1. Crear una entrada de usuario (card). En el terminal introducir:
+#### Agrega un usuario
 
+```bash
+nauta users add periquito@nauta.com.cu
+```
 
-    `> nauta card add periquito@nauta.com.cu`
+Introducir la contraseña cuando se pida. Cambie `periquito@nauta.com.cu` por 
+su usuario Nauta.
+
+#### Iniciar sesion:
+
+__Especificando el usuario__
+
+```bash
+nauta up periquito
+```
+
+Se muestra el tiempo en el terminal, para cerrar la sesión se debe pulsar `Ctrl+C`.
+
+* Opcionalmente puede especificar la duración máxima para la sesión, luego de la cual se desconecta automáticamente:
     
-    Introducir la contraseña cuando se pida. Debe cambiar `periquito@nauta.com.cu` por su usuario Nauta.
-
-1. Iniciar sesion:
-
-    `> nauta up periquito`
+    ```bash
+    nauta up --time 60 periquito
+    ```
     
-    Se muestra el tiempo en el terminal, para cerrar la sesión se debe pulsar `Ctrl+C`.
+    El ejemplo anterior mantiene abierta la sesión durante un minuto.
 
-    * Opcionalmente puede especificar la duración máxima para la sesión, luego de la cual se desconecta automáticamente:
-    
-        `> nauta up --time 60 periquito`
-        
-        El ejemplo anterior mantiene abierta la sesión durante un minuto.
+__Sin especificar el usuario__
+
+```bash
+nauta up
+```
+Se utiza el usuario predeterminado o el primero que se encuentre en la base de datos.
+
+
+#### Ejecutar un comando con conexion
+
+```bash
+run-connected <cmd>
+```
+Ejecuta la tarea especificada con conexion, la conexion se cierra al finalizar la tarea.
+
+
+#### Consultar informacion del usuario
+
+```bash
+nauta info periquito
+```
+
+__Salida__:
+
+```text
+Usuario Nauta: periquito@nauta.com.cu
+Tiempo restante: 02:14:24
+Credito: 1.12 CUC
+```
+
+#### Determinar si hay conexion a internet
+
+```text
+nauta is-online
+```
+
+__Salida__:
+```text
+Online: No
+```
+
+#### Determinar si hay una sesion abierta
+
+```text
+nauta is-logged-in
+```
+
+__Salida__:
+```text
+Sesion activa: No
+```
     
 # Mas Información
 
 Lee la ayuda del modulo una vez instalado:
 
-`> nautacli --help`
+```bash
+nauta --help
+```
+
+## Contribuir
+Todas las contribuciones son bienvenidas. Puedes ayudar trabajando en uno de los issues existentes. 
+Clona el repo, crea una rama para el issue que estes trabajando y cuando estes listo crea un Pull Request.
+
+Tambien puedes contribuir difundiendo esta herramienta entre tus amigos y en tus redes. Mientras
+mas grande sea la comunidad mas solido sera el proyecto. 
+
+Si te gusta el proyecto dale una estrella para que otros lo encuentren mas facilmente.
+
+### Contacto del autor 
+
+- Twitter: [@atscub](https://twitter.com/atscub)
+- Telegram: [@atscub](https://t.me/atscub)
