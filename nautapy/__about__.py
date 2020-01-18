@@ -10,7 +10,7 @@ __all__ = [
 
 __name__ = "nautapy"
 __cli__ = "nauta"
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 __author__ = "Abraham Toledo Sanchez"
 __email__ = "abrahamtoledo90@gmail.com"
