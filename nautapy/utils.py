@@ -1,6 +1,6 @@
 import re
 
-from nautacli.exceptions import NautaFormatException
+from nautapy.exceptions import NautaFormatException
 
 _re_time = re.compile(r'^\s*(?P<hours>\d+?)\s*:\s*(?P<minutes>\d+?)\s*:\s*(?P<seconds>\d+?)\s*$')
 

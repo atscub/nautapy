@@ -1,5 +1,5 @@
-from nautacli.exceptions import NautaFormatException
-from nautacli.utils import strtime2seconds, seconds2strtime
+from nautapy.exceptions import NautaFormatException
+from nautapy.utils import strtime2seconds, seconds2strtime
 import pytest
 
 

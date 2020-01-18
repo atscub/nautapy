@@ -8,12 +8,12 @@ __all__ = [
     "__description__",
 ]
 
-__name__ = "nauta-cli"
+__name__ = "nautapy"
 __cli__ = "nauta"
-__version__ = "0.7.1"
+__version__ = "0.1.0"
 
 __author__ = "Abraham Toledo Sanchez"
 __email__ = "abrahamtoledo90@gmail.com"
-__url__ = "https://github.com/abrahamtoledo/nauta-cli"
+__url__ = "https://github.com/abrahamtoledo/nautapy"
 
-__description__ = "Utilidad en linea de comandos (CLI) para la gestion del portal cautivo Nauta de Cuba"
+__description__ = "Python API para el portal cautivo Nauta de Cuba + CLI"

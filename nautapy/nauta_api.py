@@ -30,8 +30,8 @@ import bs4
 import requests
 from requests import RequestException
 
-from nautacli.__about__ import __name__ as prog_name
-from nautacli.exceptions import NautaLoginException, NautaLogoutException, NautaException, NautaPreLoginException
+from nautapy.__about__ import __name__ as prog_name
+from nautapy.exceptions import NautaLoginException, NautaLogoutException, NautaException, NautaPreLoginException
 
 MAX_DISCONNECT_ATTEMPTS = 10
 
@@ -255,7 +255,7 @@ class NautaProtocol(object):
                 "Fallo al obtener el credito del usuario: no se encontro la informacion"
             )
 
-        return credit_tag.get_text()
+        return credit_tag.get_text().strip()
 
 
 class NautaClient(object):
@@ -329,6 +329,7 @@ class NautaClient(object):
                     username=self.user,
                 )
                 self.session.dispose()
+                self.session = None
 
                 return
             except RequestException:

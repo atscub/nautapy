@@ -1,10 +1,6 @@
-# nauta-cli
+# nautapy
 
-Original [ateijelo/nauta-cli](https://github.com/ateijelo/nauta-cli)
-
-## Descripción
-
-**nauta-cli** es una utilidad en línea de comandos (CLI) para la gestión del portal cautivo [Nauta](https://secure.etecsa.net:8443/) de Cuba.
+__nautapy__ es un wrapper  [Nauta](https://secure.etecsa.net:8443/) de Cuba.
 
 ## Estadisticas
 ![Downloads](https://pepy.tech/badge/nauta-cli)

@@ -23,7 +23,7 @@ import os
 import warnings
 
 import pytest
-from nautacli.nauta_api import NautaProtocol
+from nautapy.nauta_api import NautaProtocol
 
 
 def save_csrfhw(csrfhw):

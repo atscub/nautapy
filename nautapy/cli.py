@@ -4,10 +4,12 @@ import sys
 import time
 import sqlite3
 
-from nautacli.exceptions import NautaException
-from nautacli.nauta_api import NautaClient, NautaProtocol
-from nautacli import utils
-from nautacli.__about__ import __name__ as prog_name, __version__ as version
+from requests import RequestException
+
+from nautapy.exceptions import NautaException
+from nautapy.nauta_api import NautaClient, NautaProtocol
+from nautapy import utils
+from nautapy.__about__ import __cli__ as prog_name, __version__ as version
 
 from base64 import b85encode, b85decode
 
@@ -101,8 +103,8 @@ def list_users(args):
 
 
 def _get_credentials(args):
-    user = args.__dict__.get("user", _get_default_user())
-    password = args.__dict__.get("password", None)
+    user = args.user or _get_default_user()
+    password = args.password or None
 
     if not user:
         print(
@@ -130,6 +132,7 @@ def up(args):
 
     if args.batch:
         client.login()
+        print("[Sesion iniciada]")
     else:
         with client.login():
             login_time = int(time.time())
@@ -155,7 +158,7 @@ def up(args):
                     )
 
                     if args.session_time:
-                        if args.session_time > elapsed:
+                        if args.session_time < elapsed:
                             break
 
                         print(
@@ -165,13 +168,18 @@ def up(args):
                             end=""
                         )
 
-
                     time.sleep(1)
             except KeyboardInterrupt:
                 pass
 
             print("Cerrando sesion ...")
-        print("Sesion cerrada con exito")
+        print("Sesion cerrada con exito.")
+        print("Tiempo restante: {}".format(
+            utils.val_or_error(lambda: client.remaining_time)
+        ))
+        print("Credito: {}".format(
+            utils.val_or_error(lambda: client.user_credit)
+        ))
 
 
 def down(args):
@@ -223,7 +231,7 @@ def run_connected(args):
     client = NautaClient(user, password)
 
     with client.login():
-        os.system(args.command)
+        os.system(" ".join(args.cmd))
 
 
 def create_user_subparsers(subparsers):
@@ -269,8 +277,8 @@ def main():
     # loggin parser
     up_parser = subparsers.add_parser("up")
     up_parser.set_defaults(func=up)
-    up_parser.add_argument("-t", "--session-time", required=False, help="Tiempo de desconexion")
-    up_parser.add_argument("-b", "--batch", required=False, help="Ejecutar en modo no interactivo")
+    up_parser.add_argument("-t", "--session-time", action="store", default=None, type=int, help="Tiempo de desconexion en segundos")
+    up_parser.add_argument("-b", "--batch", action="store_true", default=False, help="Ejecutar en modo no interactivo")
     up_parser.add_argument("user", nargs="?", help="Usuario Nauta")
     up_parser.add_argument("password", nargs="?", help="Password del usuario Nauta")
 
@@ -308,4 +316,6 @@ def main():
         args.func(args)
     except NautaException as ex:
         print(ex.args[0], file=sys.stderr)
+    except RequestException:
+        print("Hubo un problema en la red, por favor revise su conexion", file=sys.stderr)
 

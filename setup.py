@@ -5,12 +5,12 @@ from io import open
 
 def get_about():
     scope = {}
-    with open("nautacli/__about__.py") as fp:
+    with open("nautapy/__about__.py") as fp:
         exec(fp.read(), scope)
     return scope
 
 
-def get_requirements(env="deploy.txt"):
+def get_requirements(env="base.txt"):
     with open("requirements/{}".format(env)) as fd:
         requirements = []
         for line in fd.readlines():
@@ -44,8 +44,6 @@ setup(
     author=about["__author__"],
     author_email=about["__email__"],
     classifiers=[
-        "Development Status :: 3 - Alpha",
-        "Intended Audience :: End Users/Desktop",
         "Topic :: Internet",
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python"
@@ -54,6 +52,6 @@ setup(
     packages=find_packages(),
     install_requires=get_requirements(),
     entry_points={
-        "console_scripts": [about["__cli__"] + "=nautacli:main"],
+        "console_scripts": [about["__cli__"] + "=nautapy.cli:main"],
     }
 )

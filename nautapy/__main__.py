@@ -1,4 +1,4 @@
-import nautacli.cli as cli
+import nautapy.cli as cli
 
 
 if __name__ == '__main__':
