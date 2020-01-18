@@ -30,6 +30,7 @@ import bs4
 import requests
 from requests import RequestException
 
+from nautapy import appdata_path
 from nautapy.__about__ import __name__ as prog_name
 from nautapy.exceptions import NautaLoginException, NautaLogoutException, NautaException, NautaPreLoginException
 
@@ -38,8 +39,9 @@ MAX_DISCONNECT_ATTEMPTS = 10
 ETECSA_HOMEPAGE = "http://www.etecsa.cu"
 _re_login_fail_reason = re.compile('alert\("(?P<reason>[^"]*?)"\)')
 
-NAUTA_SESSION_FILE = "/tmp/nauta-session-file"
-NAUTA_COOKIEJAR_FILE = "/tmp/nauta-session-file"
+
+NAUTA_SESSION_FILE = os.path.join(appdata_path, "nauta-session")
+NAUTA_COOKIEJAR_FILE = os.path.join(appdata_path, "nauta-cookiejar")
 
 
 class SessionObject(object):

@@ -10,11 +10,12 @@ from nautapy.exceptions import NautaException
 from nautapy.nauta_api import NautaClient, NautaProtocol
 from nautapy import utils
 from nautapy.__about__ import __cli__ as prog_name, __version__ as version
+from nautapy import appdata_path
 
 from base64 import b85encode, b85decode
 
 
-USERS_DB = "/tmp/users.db"
+USERS_DB = os.path.join(appdata_path, "users.db")
 
 
 def users_db_connect():
