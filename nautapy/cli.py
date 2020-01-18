@@ -3,6 +3,7 @@ import os
 import sys
 import time
 import sqlite3
+from getpass import getpass
 
 from requests import RequestException
 
@@ -57,8 +58,10 @@ def _find_credentials(user, default_password=None):
 
 
 def add_user(args):
+    password = args.password or getpass("Contraseña para {}: ".format(args.user))
+
     cursor, connection = users_db_connect()
-    cursor.execute("INSERT INTO users VALUES (?, ?)", (args.user, b85encode(args.password.encode('utf-8'))))
+    cursor.execute("INSERT INTO users VALUES (?, ?)", (args.user, b85encode(password.encode('utf-8'))))
     connection.commit()
 
     print("Usuario guardado: {}".format(args.user))
@@ -88,8 +91,10 @@ def remove_user(args):
 
 
 def set_password(args):
+    password = args.password or getpass("Contraseña para {}: ".format(args.user))
+
     cursor, connection = users_db_connect()
-    cursor.execute("UPDATE users SET password=? WHERE user=?", (b85encode(args.password.encode('utf-8')), args.user))
+    cursor.execute("UPDATE users SET password=? WHERE user=?", (b85encode(password.encode('utf-8')), args.user))
 
     connection.commit()
 
@@ -184,8 +189,7 @@ def up(args):
 
 
 def down(args):
-    user, password = _get_credentials(args)
-    client = NautaClient(user, password)
+    client = NautaClient(user=None, password=None)
 
     if client.is_logged_in:
         client.load_last_session()
@@ -243,7 +247,7 @@ def create_user_subparsers(subparsers):
     user_add_parser = user_subparsers.add_parser("add")
     user_add_parser.set_defaults(func=add_user)
     user_add_parser.add_argument("user", help="Usuario Nauta")
-    user_add_parser.add_argument("password", help="Password del usuario Nauta")
+    user_add_parser.add_argument("password", nargs="?", help="Password del usuario Nauta")
 
     # Set default user
     user_set_default_parser = user_subparsers.add_parser("set-default")
@@ -254,7 +258,7 @@ def create_user_subparsers(subparsers):
     user_set_password_parser = user_subparsers.add_parser("set-password")
     user_set_password_parser.set_defaults(func=set_password)
     user_set_password_parser.add_argument("user", help="Usuario Nauta")
-    user_set_password_parser.add_argument("password", help="Password del usuario Nauta")
+    user_set_password_parser.add_argument("password", nargs="?", help="Password del usuario Nauta")
 
     # Remove user
     user_remove_parser = user_subparsers.add_parser("remove")
