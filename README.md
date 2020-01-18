@@ -2,7 +2,7 @@
 
 __nautapy__ Python API para el portal cautivo [Nauta](https://secure.etecsa.net:8443/) de Cuba + CLI.
 
-![Screenshot](blob/screenshots/screenshots/console-screenshot.png?raw=true)
+![Screenshot](../screenshots/screenshots/console-screenshot.png?raw=true)
 
 ## Requisitos
 
