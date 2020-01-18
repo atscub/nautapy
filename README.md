@@ -1,6 +1,6 @@
-# nautapy
+# NautaPy
 
-__nautapy__ Python API para el portal cautivo [Nauta](https://secure.etecsa.net:8443/) de Cuba + CLI.
+__NautaPy__ Python API para el portal cautivo [Nauta](https://secure.etecsa.net:8443/) de Cuba + CLI.
 
 ![Screenshot](../screenshots/screenshots/console-screenshot.png?raw=true)
 
