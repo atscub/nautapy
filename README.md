@@ -2,6 +2,7 @@
 
 __nautapy__ Python API para el portal cautivo [Nauta](https://secure.etecsa.net:8443/) de Cuba + CLI.
 
+![Screenshot](blob/screenshots/screenshots/console-screenshot.png?raw=true)
 
 ## Requisitos
 
@@ -117,3 +118,7 @@ Si te gusta el proyecto dale una estrella para que otros lo encuentren mas facil
 
 - Twitter: [@atscub](https://twitter.com/atscub)
 - Telegram: [@atscub](https://t.me/atscub)
+
+
+### Compartir
+- [Twitter](https://twitter.com/intent/tweet?url=https%3A%2F%2Fgithub.com%2Fabrahamtoledo%2Fnautapy%2F&text=Python%20API%20para%20el%20portal%20cautivo%20Nauta%20de%20Cuba%20%2B%20CLI)
