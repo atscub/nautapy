@@ -5,7 +5,7 @@ import requests
 from requests_mock import Mocker as RequestMocker, ANY
 
 from nautapy.exceptions import NautaLoginException, NautaPreLoginException
-from nautapy.nauta_api import ETECSA_HOMEPAGE, NautaProtocol
+from nautapy.nauta_api import CHECK_PAGE, NautaProtocol
 
 
 _assets_dir = os.path.join(

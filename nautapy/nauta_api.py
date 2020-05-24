@@ -36,7 +36,7 @@ from nautapy.exceptions import NautaLoginException, NautaLogoutException, NautaE
 
 MAX_DISCONNECT_ATTEMPTS = 10
 
-ETECSA_HOMEPAGE = "http://www.etecsa.cu"
+CHECK_PAGE = "http://www.cubadebate.cu"
 _re_login_fail_reason = re.compile('alert\("(?P<reason>[^"]*?)"\)')
 
 
@@ -110,7 +110,7 @@ class NautaProtocol(object):
 
     @classmethod
     def is_connected(cls):
-        r = requests.get(ETECSA_HOMEPAGE)
+        r = requests.get(CHECK_PAGE)
         return b'secure.etecsa.net' not in r.content
 
     @classmethod
