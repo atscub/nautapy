@@ -106,6 +106,8 @@ nauta --help
 ```
 
 ## Contribuir
+__IMPORTANTE__: Notificame por Telegram sobre cualquier actividad en el proyecto (Issue o PR).
+
 Todas las contribuciones son bienvenidas. Puedes ayudar trabajando en uno de los issues existentes. 
 Clona el repo, crea una rama para el issue que estes trabajando y cuando estes listo crea un Pull Request.
 
