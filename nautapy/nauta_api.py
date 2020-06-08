@@ -215,7 +215,6 @@ class NautaProtocol(object):
 
     @classmethod
     def get_user_time(cls, session, username):
-        print('GETTING TIME')
 
         r = session.requests_session.post(
             "https://secure.etecsa.net:8443/EtecsaQueryServlet",
