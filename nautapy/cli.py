@@ -178,8 +178,12 @@ def up(args):
                     time.sleep(1)
             except KeyboardInterrupt:
                 pass
+            finally:
+                print("\n\nCerrando sesion ...")
+                print("Tiempo restante: {}".format(utils.val_or_error(lambda: client.remaining_time)))
 
-            print("Cerrando sesion ...")
+
+            
         print("Sesion cerrada con exito.")
         print("Credito: {}".format(
             utils.val_or_error(lambda: client.user_credit)
