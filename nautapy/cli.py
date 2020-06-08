@@ -130,19 +130,20 @@ def up(args):
     client = NautaClient(user=user, password=password)
 
     print(
-        "Conectando usuario: {}. Tiempo restante: {}".format(
+        "Conectando usuario: {}".format(
             client.user,
-            utils.val_or_error(lambda: client.remaining_time)
         )
     )
 
     if args.batch:
         client.login()
         print("[Sesion iniciada]")
+        print("Tiempo restante: {}".format(utils.val_or_error(lambda: client.remaining_time)))
     else:
         with client.login():
             login_time = int(time.time())
             print("[Sesion iniciada]")
+            print("Tiempo restante: {}".format(utils.val_or_error(lambda: client.remaining_time)))
             print(
                 "Presione Ctrl+C para desconectarse, o ejecute '{} down' desde otro terminal".format(
                     prog_name
@@ -180,9 +181,6 @@ def up(args):
 
             print("Cerrando sesion ...")
         print("Sesion cerrada con exito.")
-        print("Tiempo restante: {}".format(
-            utils.val_or_error(lambda: client.remaining_time)
-        ))
         print("Credito: {}".format(
             utils.val_or_error(lambda: client.user_credit)
         ))
