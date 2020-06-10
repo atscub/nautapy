@@ -37,11 +37,11 @@ from nautapy.exceptions import NautaLoginException, NautaLogoutException, NautaE
 MAX_DISCONNECT_ATTEMPTS = 10
 
 CHECK_PAGE = "http://www.cubadebate.cu"
+LOGIN_DOMAIN = b"secure.etecsa.net"
 _re_login_fail_reason = re.compile('alert\("(?P<reason>[^"]*?)"\)')
 
 
 NAUTA_SESSION_FILE = os.path.join(appdata_path, "nauta-session")
-NAUTA_COOKIEJAR_FILE = os.path.join(appdata_path, "nauta-cookiejar")
 
 
 class SessionObject(object):
@@ -111,7 +111,7 @@ class NautaProtocol(object):
     @classmethod
     def is_connected(cls):
         r = requests.get(CHECK_PAGE)
-        return b'secure.etecsa.net' not in r.content
+        return LOGIN_DOMAIN not in r.content
 
     @classmethod
     def create_session(cls):
@@ -123,7 +123,7 @@ class NautaProtocol(object):
 
         session = SessionObject()
 
-        resp = session.requests_session.get("http://1.1.1.1/")
+        resp = session.requests_session.get(CHECK_PAGE)
         if not resp.ok:
             raise NautaPreLoginException("Failed to create session")
 
