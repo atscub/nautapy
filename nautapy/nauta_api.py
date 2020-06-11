@@ -215,11 +215,17 @@ class NautaProtocol(object):
 
     @classmethod
     def get_user_time(cls, session, username):
-        r = session.requests_session.get(
-            "https://secure.etecsa.net:8443/EtecsaQueryServlet?"
-            "CSRFHW={}&"
-            "op=getLeftTime&"
-            "op1={}".format(session.csrfhw, username))
+
+        r = session.requests_session.post(
+            "https://secure.etecsa.net:8443/EtecsaQueryServlet",
+            {
+                "op": "getLeftTime",
+                "ATTRIBUTE_UUID": session.attribute_uuid,
+                "CSRFHW": session.csrfhw,
+                "wlanuserip": session.wlanuserip,
+                "username": username,
+            }
+        )
 
         return r.text
 
