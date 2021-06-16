@@ -106,7 +106,7 @@ nauta --help
 ```
 
 ## Contribuir
-__IMPORTANTE__: Notificame por Telegram sobre cualquier actividad en el proyecto (Issue o PR).
+__IMPORTANTE__: Notificame por Twitter (enviar DM) sobre cualquier actividad en el proyecto (Issue o PR).
 
 Todas las contribuciones son bienvenidas. Puedes ayudar trabajando en uno de los issues existentes. 
 Clona el repo, crea una rama para el issue que estes trabajando y cuando estes listo crea un Pull Request.
@@ -119,7 +119,6 @@ Si te gusta el proyecto dale una estrella para que otros lo encuentren mas facil
 ### Contacto del autor 
 
 - Twitter: [@atscub](https://twitter.com/atscub)
-- Telegram: [@atscub](https://t.me/atscub)
 
 
 ### Compartir
