@@ -41,7 +41,6 @@ CHECK_PAGE = "http://www.cubadebate.cu/"
 LOGIN_DOMAIN = b"secure.etecsa.net"
 _re_login_fail_reason = re.compile('alert\("(?P<reason>[^"]*?)"\)')
 
-
 NAUTA_SESSION_FILE = os.path.join(appdata_path, "nauta-session")
 
 
@@ -361,4 +360,5 @@ class NautaClient(object):
         pass
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.logout()
+        if SessionObject.is_logged_in():
+            self.logout()

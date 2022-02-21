@@ -169,7 +169,7 @@ def up(args):
                             break
 
                         print(
-                            " La sesión se cerrara en {}.".format(
+                            " La sesión se cerrará en {}".format(
                                 utils.seconds2strtime(args.session_time - elapsed)
                             ),
                             end=""
