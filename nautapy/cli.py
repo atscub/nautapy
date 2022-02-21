@@ -114,8 +114,8 @@ def _get_credentials(args):
 
     if not user:
         print(
-            "No existe ningun usuario. Debe crear uno. "
-            "Ejecute '{} --help' para mas ayuda".format(
+            "No existe ningún usuario. Debe crear uno. "
+            "Ejecute '{} --help' para más ayuda".format(
                 prog_name
             ),
             file=sys.stderr
@@ -137,12 +137,12 @@ def up(args):
 
     if args.batch:
         client.login()
-        print("[Sesion iniciada]")
+        print("[Sesión iniciada]")
         print("Tiempo restante: {}".format(utils.val_or_error(lambda: client.remaining_time)))
     else:
         with client.login():
             login_time = int(time.time())
-            print("[Sesion iniciada]")
+            print("[Sesión iniciada]")
             print("Tiempo restante: {}".format(utils.val_or_error(lambda: client.remaining_time)))
             print(
                 "Presione Ctrl+C para desconectarse, o ejecute '{} down' desde otro terminal".format(
@@ -158,7 +158,7 @@ def up(args):
                     elapsed = int(time.time()) - login_time
 
                     print(
-                        "\rTiempo de conexion: {}.".format(
+                        "\rTiempo de conexión: {}".format(
                             utils.seconds2strtime(elapsed)
                         ),
                         end=""
@@ -169,7 +169,7 @@ def up(args):
                             break
 
                         print(
-                            " La sesion se cerrara en {}.".format(
+                            " La sesión se cerrara en {}.".format(
                                 utils.seconds2strtime(args.session_time - elapsed)
                             ),
                             end=""
@@ -179,15 +179,15 @@ def up(args):
             except KeyboardInterrupt:
                 pass
             finally:
-                print("\n\nCerrando sesion ...")
+                print("\n\nCerrando sesión ...")
                 print("Tiempo restante: {}".format(utils.val_or_error(lambda: client.remaining_time)))
 
 
             
-        print("Sesion cerrada con exito.")
-        print("Credito: {}".format(
-            utils.val_or_error(lambda: client.user_credit)
-        ))
+        print("Sesión cerrada con éxito.")
+        #print("Crédito: {}".format(
+        #    utils.val_or_error(lambda: client.user_credit)
+        #))
 
 
 def down(args):
@@ -196,23 +196,23 @@ def down(args):
     if client.is_logged_in:
         client.load_last_session()
         client.logout()
-        print("Sesion cerrada con exito")
+        print("Sesión cerrada con éxito")
     else:
-        print("No hay ninguna sesion activa")
+        print("No hay ninguna sesión activa")
 
 
 def is_logged_in(args):
     client = NautaClient(user=None, password=None)
 
-    print("Sesion activa: {}".format(
-        "Si" if client.is_logged_in
+    print("Sesión activa: {}".format(
+        "Sí" if client.is_logged_in
         else "No"
     ))
 
 
 def is_online(args):
     print("Online: {}".format(
-        "Si" if NautaProtocol.is_connected()
+        "Sí" if NautaProtocol.is_connected()
         else "No"
     ))
 
@@ -228,9 +228,9 @@ def info(args):
     print("Tiempo restante: {}".format(
         utils.val_or_error(lambda: client.remaining_time)
     ))
-    print("Credito: {}".format(
-        utils.val_or_error(lambda: client.user_credit)
-    ))
+    #print("Crédito: {}".format(
+    #    utils.val_or_error(lambda: client.user_credit)
+    #))
 
 
 def run_connected(args):
@@ -284,7 +284,7 @@ def main():
     # loggin parser
     up_parser = subparsers.add_parser("up")
     up_parser.set_defaults(func=up)
-    up_parser.add_argument("-t", "--session-time", action="store", default=None, type=int, help="Tiempo de desconexion en segundos")
+    up_parser.add_argument("-t", "--session-time", action="store", default=None, type=int, help="Tiempo de desconexión en segundos")
     up_parser.add_argument("-b", "--batch", action="store_true", default=False, help="Ejecutar en modo no interactivo")
     up_parser.add_argument("user", nargs="?", help="Usuario Nauta")
     up_parser.add_argument("password", nargs="?", help="Password del usuario Nauta")
@@ -324,5 +324,5 @@ def main():
     except NautaException as ex:
         print(ex.args[0], file=sys.stderr)
     except RequestException:
-        print("Hubo un problema en la red, por favor revise su conexion", file=sys.stderr)
+        print("Hubo un problema en la red, por favor revise su conexión", file=sys.stderr)
 
