@@ -59,11 +59,12 @@ class SessionObject(object):
         requests_session.cookies = cookielib.MozillaCookieJar(NAUTA_SESSION_FILE)
         return requests_session
 
-    def save(self):
+    def save(self, username=None):
         self.requests_session.cookies.save()
 
         data = {**self.__dict__}
         data.pop("requests_session")
+        data["username"] = username
 
         with open(NAUTA_SESSION_FILE, "w") as fp:
             json.dump(data, fp)
@@ -294,7 +295,7 @@ class NautaClient(object):
             self.password
         )
 
-        self.session.save()
+        self.session.save(self.user)
 
         return self
 

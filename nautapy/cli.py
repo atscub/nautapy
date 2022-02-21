@@ -191,11 +191,11 @@ def up(args):
 
 
 def down(args):
-    user = _get_default_user()
-    client = NautaClient(user, password=None)
+    client = NautaClient(user=None, password=None)
 
     if client.is_logged_in:
         client.load_last_session()
+        client.user = client.session.__dict__.get("username")
         client.logout()
         print("Sesión cerrada con éxito")
     else:
