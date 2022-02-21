@@ -187,7 +187,7 @@ class NautaProtocol(object):
             else None
 
     @classmethod
-    def logout(cls, session, username=None):
+    def logout(cls, session, username):
         logout_url = \
             (
                 "https://secure.etecsa.net:8443/LogoutServlet?" +
@@ -202,7 +202,7 @@ class NautaProtocol(object):
                 session.wlanuserip
             )
 
-        response = session.requests_session.get(logout_url)
+        response = session.requests_session.post(logout_url)
         if not response.ok:
             raise NautaLogoutException(
                 "Fallo al cerrar la sesión: {} - {}".format(

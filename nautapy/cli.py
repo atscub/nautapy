@@ -191,7 +191,8 @@ def up(args):
 
 
 def down(args):
-    client = NautaClient(user=None, password=None)
+    user = _get_default_user()
+    client = NautaClient(user, password=None)
 
     if client.is_logged_in:
         client.load_last_session()
