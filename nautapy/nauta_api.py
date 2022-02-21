@@ -39,7 +39,7 @@ MAX_DISCONNECT_ATTEMPTS = 10
 CHECK_PAGE = "http://www.cubadebate.cu/"
 
 LOGIN_DOMAIN = b"secure.etecsa.net"
-_re_login_fail_reason = re.compile('alert\("(?P<reason>[^"]*?)"\)')
+#_re_login_fail_reason = re.compile("alert\(\"(?P<reason>[^\"]*?)\"\)")
 
 NAUTA_SESSION_FILE = os.path.join(appdata_path, "nauta-session")
 
@@ -172,8 +172,8 @@ class NautaProtocol(object):
         if not "online.do" in r.url:
             soup = bs4.BeautifulSoup(r.text, "html.parser")
             script_text = soup.find_all("script")[-1].get_text()
-
-            match = _re_login_fail_reason.match(script_text)
+            #match = _re_login_fail_reason.match(script_text)
+            match = re.search(r'alert\(\"(?P<reason>[^\"]*?)\"\)', script_text)
             raise NautaLoginException(
                 "Falló el inicio de sesión: {}".format(
                     match and match.groupdict().get("reason")
