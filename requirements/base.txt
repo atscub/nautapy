@@ -3,6 +3,6 @@ bs4==0.0.1
 certifi==2019.9.11
 chardet==3.0.4
 idna==2.8
-requests==2.22.0
+requests==2.27.1
 soupsieve==1.9.5
-urllib3==1.25.7
+urllib3==1.26.8

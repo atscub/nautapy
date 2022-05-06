@@ -36,10 +36,10 @@ from nautapy.exceptions import NautaLoginException, NautaLogoutException, NautaE
 
 MAX_DISCONNECT_ATTEMPTS = 10
 
-CHECK_PAGE = "http://www.cubadebate.cu"
-LOGIN_DOMAIN = b"secure.etecsa.net"
-_re_login_fail_reason = re.compile('alert\("(?P<reason>[^"]*?)"\)')
+CHECK_PAGE = "http://www.cubadebate.cu/"
 
+LOGIN_DOMAIN = b"secure.etecsa.net"
+#_re_login_fail_reason = re.compile("alert\(\"(?P<reason>[^\"]*?)\"\)")
 
 NAUTA_SESSION_FILE = os.path.join(appdata_path, "nauta-session")
 
@@ -59,11 +59,12 @@ class SessionObject(object):
         requests_session.cookies = cookielib.MozillaCookieJar(NAUTA_SESSION_FILE)
         return requests_session
 
-    def save(self):
+    def save(self, username=None):
         self.requests_session.cookies.save()
 
         data = {**self.__dict__}
         data.pop("requests_session")
+        data["username"] = username
 
         with open(NAUTA_SESSION_FILE, "w") as fp:
             json.dump(data, fp)
@@ -110,25 +111,30 @@ class NautaProtocol(object):
 
     @classmethod
     def is_connected(cls):
-        r = requests.get(CHECK_PAGE)
-        return LOGIN_DOMAIN not in r.content
+        try:
+            r = requests.get(CHECK_PAGE, timeout=3)
+            return LOGIN_DOMAIN not in r.content;
+        except (requests.ConnectionError, requests.Timeout) as exception:
+            return False;
+        #return LOGIN_DOMAIN not in r.content
 
     @classmethod
     def create_session(cls):
         if cls.is_connected():
             if SessionObject.is_logged_in():
-                raise NautaPreLoginException("Hay una session abierta")
+                raise NautaPreLoginException("Hay una sessión abierta")
             else:
-                raise NautaPreLoginException("Hay una conexion activa")
+                raise NautaPreLoginException("Hay una conexión activa")
 
         session = SessionObject()
-
-        resp = session.requests_session.get(CHECK_PAGE)
+        #resp = session.requests_session.get(CHECK_PAGE, allow_redirects=True)
+        resp = session.requests_session.get("https://secure.etecsa.net:8443")
         if not resp.ok:
             raise NautaPreLoginException("Failed to create session")
 
         soup = bs4.BeautifulSoup(resp.text, 'html.parser')
-        action = soup.form["action"]
+        #action = soup.form["action"]
+        action = "https://secure.etecsa.net:8443"
         data = cls._get_inputs(soup)
 
         # Now go to the login page
@@ -146,7 +152,6 @@ class NautaProtocol(object):
 
     @classmethod
     def login(cls, session, username, password):
-
         r = session.requests_session.post(
             session.login_action,
             {
@@ -159,7 +164,7 @@ class NautaProtocol(object):
 
         if not r.ok:
             raise NautaLoginException(
-                "Fallo el inicio de sesion: {} - {}".format(
+                "Falló el inicio de sesión: {} - {}".format(
                     r.status_code,
                     r.reason
                 )
@@ -168,10 +173,10 @@ class NautaProtocol(object):
         if not "online.do" in r.url:
             soup = bs4.BeautifulSoup(r.text, "html.parser")
             script_text = soup.find_all("script")[-1].get_text()
-
-            match = _re_login_fail_reason.match(script_text)
+            #match = _re_login_fail_reason.match(script_text)
+            match = re.search(r'alert\(\"(?P<reason>[^\"]*?)\"\)', script_text)
             raise NautaLoginException(
-                "Fallo el inicio de sesion: {}".format(
+                "Falló el inicio de sesión: {}".format(
                     match and match.groupdict().get("reason")
                 )
             )
@@ -182,7 +187,7 @@ class NautaProtocol(object):
             else None
 
     @classmethod
-    def logout(cls, session, username=None):
+    def logout(cls, session, username):
         logout_url = \
             (
                 "https://secure.etecsa.net:8443/LogoutServlet?" +
@@ -197,10 +202,10 @@ class NautaProtocol(object):
                 session.wlanuserip
             )
 
-        response = session.requests_session.get(logout_url)
+        response = session.requests_session.post(logout_url)
         if not response.ok:
             raise NautaLogoutException(
-                "Fallo al cerrar la sesion: {} - {}".format(
+                "Fallo al cerrar la sesión: {} - {}".format(
                     response.status_code,
                     response.reason
                 )
@@ -208,7 +213,7 @@ class NautaProtocol(object):
 
         if "SUCCESS" not in response.text.upper():
             raise NautaLogoutException(
-                "Fallo al cerrar la sesion: {}".format(
+                "Fallo al cerrar la sesión: {}".format(
                     response.text[:100]
                 )
             )
@@ -244,7 +249,7 @@ class NautaProtocol(object):
 
         if not r.ok:
             raise NautaException(
-                "Fallo al obtener la informacion del usuario: {} - {}".format(
+                "Fallo al obtener la información del usuario: {} - {}".format(
                     r.status_code,
                     r.reason
                 )
@@ -252,7 +257,7 @@ class NautaProtocol(object):
 
         if "secure.etecsa.net" not in r.url:
             raise NautaException(
-                "No se puede obtener el credito del usuario mientras esta online"
+                "No se puede obtener el crédito del usuario mientras está online"
             )
 
         soup = bs4.BeautifulSoup(r.text, "html.parser")
@@ -260,7 +265,7 @@ class NautaProtocol(object):
 
         if not credit_tag:
             raise NautaException(
-                "Fallo al obtener el credito del usuario: no se encontro la informacion"
+                "Fallo al obtener el crédito del usuario: no se encontró la información"
             )
 
         return credit_tag.get_text().strip()
@@ -290,7 +295,7 @@ class NautaClient(object):
             self.password
         )
 
-        self.session.save()
+        self.session.save(self.user)
 
         return self
 
@@ -344,8 +349,8 @@ class NautaClient(object):
                 time.sleep(1)
 
         raise NautaLogoutException(
-            "Hay problemas en la red y no se puede cerrar la session.\n"
-            "Es posible que ya este desconectado. Intente con '{} down' "
+            "Hay problemas en la red y no se puede cerrar la sessión.\n"
+            "Es posible que ya esté desconectado. Intente con '{} down' "
             "dentro de unos minutos".format(prog_name)
         )
 
@@ -356,4 +361,5 @@ class NautaClient(object):
         pass
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.logout()
+        if SessionObject.is_logged_in():
+            self.logout()
