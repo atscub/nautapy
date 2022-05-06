@@ -37,9 +37,8 @@ from nautapy.exceptions import NautaLoginException, NautaLogoutException, NautaE
 MAX_DISCONNECT_ATTEMPTS = 10
 
 CHECK_PAGE = "http://www.cubadebate.cu/"
-
 LOGIN_DOMAIN = b"secure.etecsa.net"
-#_re_login_fail_reason = re.compile("alert\(\"(?P<reason>[^\"]*?)\"\)")
+LOGIN_URL = "https://secure.etecsa.net:8443"
 
 NAUTA_SESSION_FILE = os.path.join(appdata_path, "nauta-session")
 
@@ -127,14 +126,12 @@ class NautaProtocol(object):
                 raise NautaPreLoginException("Hay una conexión activa")
 
         session = SessionObject()
-        #resp = session.requests_session.get(CHECK_PAGE, allow_redirects=True)
-        resp = session.requests_session.get("https://secure.etecsa.net:8443")
+        resp = session.requests_session.get(LOGIN_URL)
         if not resp.ok:
             raise NautaPreLoginException("Failed to create session")
 
         soup = bs4.BeautifulSoup(resp.text, 'html.parser')
-        #action = soup.form["action"]
-        action = "https://secure.etecsa.net:8443"
+        action = LOGIN_URL
         data = cls._get_inputs(soup)
 
         # Now go to the login page
@@ -173,7 +170,6 @@ class NautaProtocol(object):
         if not "online.do" in r.url:
             soup = bs4.BeautifulSoup(r.text, "html.parser")
             script_text = soup.find_all("script")[-1].get_text()
-            #match = _re_login_fail_reason.match(script_text)
             match = re.search(r'alert\(\"(?P<reason>[^\"]*?)\"\)', script_text)
             raise NautaLoginException(
                 "Falló el inicio de sesión: {}".format(

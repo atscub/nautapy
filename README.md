@@ -13,7 +13,7 @@ __NautaPy__ Python API para el portal cautivo [Nauta](https://secure.etecsa.net:
 Instalación:
 
 ```bash
-pip3 install --upgrade git+https://github.com/plinkr/nautapy.git
+pip3 install --upgrade git+https://github.com/atscub/nautapy.git
 ```
 
 ## Modo de uso
