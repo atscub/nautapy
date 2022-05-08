@@ -185,9 +185,9 @@ def up(args):
 
             
         print("Sesión cerrada con éxito.")
-        #print("Crédito: {}".format(
-        #    utils.val_or_error(lambda: client.user_credit)
-        #))
+        print("Crédito: {}".format(
+           utils.val_or_error(lambda: client.user_credit)
+        ))
 
 
 def down(args):
@@ -229,9 +229,9 @@ def info(args):
     print("Tiempo restante: {}".format(
         utils.val_or_error(lambda: client.remaining_time)
     ))
-    #print("Crédito: {}".format(
-    #    utils.val_or_error(lambda: client.user_credit)
-    #))
+    print("Crédito: {}".format(
+       utils.val_or_error(lambda: client.user_credit)
+    ))
 
 
 def run_connected(args):
