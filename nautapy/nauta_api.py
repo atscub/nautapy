@@ -160,7 +160,6 @@ class NautaProtocol(object):
         )
 
         if not r.ok:
-            session.dispose()
             raise NautaLoginException(
                 "Falló el inicio de sesión: {} - {}".format(
                     r.status_code,
@@ -169,7 +168,6 @@ class NautaProtocol(object):
             )
 
         if not "online.do" in r.url:
-            session.dispose()
             soup = bs4.BeautifulSoup(r.text, "html.parser")
             script_text = soup.find_all("script")[-1].get_text()
             match = re.search(r'alert\(\"(?P<reason>[^\"]*?)\"\)', script_text)
@@ -215,8 +213,6 @@ class NautaProtocol(object):
                     response.text[:100]
                 )
             )
-        
-        session.dispose()
 
     @classmethod
     def get_user_time(cls, session, username):
