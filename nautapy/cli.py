@@ -236,10 +236,20 @@ def info(args):
 
 def run_connected(args):
     user, password = _get_credentials(args)
-    client = NautaClient(user, password)
+    client = NautaClient(user=None, password=None)
 
-    with client.login():
+    if not NautaProtocol.is_connected():
+        client = NautaClient(user, password)
+        with client.login():
+            os.system(" ".join(args.cmd))
+    elif not client.is_logged_in:
+        print("No hay ninguna sesión activa")
+    else:
         os.system(" ".join(args.cmd))
+        client.load_last_session()
+        client.user = client.session.__dict__.get("username")
+        client.logout()
+        print("Sesión cerrada con éxito")
 
 
 def create_user_subparsers(subparsers):
