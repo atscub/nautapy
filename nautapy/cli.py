@@ -238,17 +238,20 @@ def run_connected(args):
     user, password = _get_credentials(args)
     client = NautaClient(user, password)
 
-    if args.strict or not NautaProtocol.is_connected():
+    if not NautaProtocol.is_connected():
         with client.login():
             os.system("".join(args.cmd))
-    elif not client.is_logged_in:
-        print("No hay ninguna sesión activa")
     else:
         os.system("".join(args.cmd))
+
+        if not client.is_logged_in:
+            print("No hay ninguna sesión activa")
+            return
+        
         client.load_last_session()
         client.user = client.session.__dict__.get("username")
-        client.logout()
-        print("Sesión cerrada con éxito")
+    client.logout()
+    print("Sesión cerrada con éxito")
 
 
 def create_user_subparsers(subparsers):
@@ -322,7 +325,9 @@ def main():
     run_connected_parser.set_defaults(func=run_connected)
     run_connected_parser.add_argument("-u", "--user", required=False, help="Usuario Nauta")
     run_connected_parser.add_argument("-p", "--password", required=False, help="Password del usuario Nauta")
-    run_connected_parser.add_argument("-s", "--strict", action="store_true", required=False, help="throws an error if there is an open session")
+    run_connected_parser.add_argument("-rc", "--reuse-connection", action="store_true", required=False, 
+                                      help="ejecuta el comando incluso si hay una conexión activa, luego cierra "
+                                      "la sesión si es posible")
     run_connected_parser.add_argument("cmd", nargs=argparse.REMAINDER, help="The command line to run")
 
     args = parser.parse_args()
