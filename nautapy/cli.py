@@ -243,6 +243,9 @@ def run_connected(args):
             os.system("".join(args.cmd))
     elif args.reuse_connection:
         os.system("".join(args.cmd))
+        if not client.is_logged_in:
+            print("No hay ninguna sesión activa")
+            return
         client.load_last_session()
         client.user = client.session.__dict__.get("username")
         client.logout()
