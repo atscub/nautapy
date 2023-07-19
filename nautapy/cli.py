@@ -244,14 +244,6 @@ def run_connected(args):
     elif args.reuse_connection:
         os.system("".join(args.cmd))
 
-        if not client.is_logged_in:
-            print("No hay ninguna sesión activa")
-            return
-        
-        client.load_last_session()
-        client.user = client.session.__dict__.get("username")
-    client.logout()
-    print("Sesión cerrada con éxito")
 
 
 def create_user_subparsers(subparsers):
