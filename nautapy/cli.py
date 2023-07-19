@@ -243,7 +243,10 @@ def run_connected(args):
             os.system("".join(args.cmd))
     elif args.reuse_connection:
         os.system("".join(args.cmd))
-
+        client.load_last_session()
+        client.user = client.session.__dict__.get("username")
+        client.logout()
+        print("Sesión cerrada con éxito")
 
 
 def create_user_subparsers(subparsers):
