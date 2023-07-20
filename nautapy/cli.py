@@ -250,6 +250,8 @@ def run_connected(args):
         client.user = client.session.__dict__.get("username")
         client.logout()
         print("Sesión cerrada con éxito")
+    else:
+        print("ya hay una conexión activa a internet, si aún así desea usar -run-connected agregue el flag --reuse-connection")
 
 
 def create_user_subparsers(subparsers):
