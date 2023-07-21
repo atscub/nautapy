@@ -240,9 +240,9 @@ def run_connected(args):
 
     if not NautaProtocol.is_connected():
         with client.login():
-            os.system("".join(args.cmd))
+            os.system(" ".join(args.cmd))
     elif args.reuse_connection:
-        os.system("".join(args.cmd))
+        os.system(" ".join(args.cmd))
         if not client.is_logged_in:
             print("No hay ninguna sesión activa")
             return
